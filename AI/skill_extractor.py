@@ -1,8 +1,8 @@
+
 import re
 
 
-# A starter list of skills our AI will recognize.
-# We can expand this list as the project develops.
+# Skills our AI can recognize
 SKILL_LIST = [
     "Python",
     "Java",
@@ -46,12 +46,6 @@ SKILL_LIST = [
 def extract_skills(text):
     """
     Find recognized skills in a piece of text.
-
-    Args:
-        text: Resume text or job description.
-
-    Returns:
-        A list of skills found in the text.
     """
 
     if not isinstance(text, str):
@@ -60,7 +54,6 @@ def extract_skills(text):
     found_skills = []
 
     for skill in SKILL_LIST:
-        # Match the skill as a whole phrase, ignoring capitalization.
         pattern = r"(?<!\w)" + re.escape(skill) + r"(?!\w)"
 
         if re.search(pattern, text, re.IGNORECASE):
@@ -69,16 +62,48 @@ def extract_skills(text):
     return found_skills
 
 
-# Test the extractor with example resume text.
+def extract_experience(text):
+    """
+    Extract the highest explicitly stated number of years
+    of experience from text.
+
+    Returns:
+        Number of years, or None if no experience is found.
+    """
+
+    if not isinstance(text, str):
+        return None
+
+    pattern = (
+        r"(\d+(?:\.\d+)?)\s*\+?\s*"
+        r"(?:years?|yrs?)\s*"
+        r"(?:of\s+)?"
+        r"(?:relevant\s+)?"
+        r"experience"
+    )
+
+    matches = re.findall(pattern, text, re.IGNORECASE)
+
+    if not matches:
+        return None
+
+    years = [float(value) for value in matches]
+
+    return max(years)
+
+
+# Test the extractor
 if __name__ == "__main__":
 
     sample_resume = """
-    I have experience in Python, SQL, and Machine Learning.
-    I have used Pandas and Scikit-learn for Data Analysis.
-    I also know Git and have good Communication Skills.
+    I am a software developer with 3 years of experience
+    in Python, JavaScript, React, SQL and Docker.
+
+    I have worked on several software development projects.
     """
 
     skills = extract_skills(sample_resume)
+    experience = extract_experience(sample_resume)
 
     print("Sample resume:")
     print(sample_resume)
@@ -87,3 +112,5 @@ if __name__ == "__main__":
     print(skills)
 
     print("\nTotal skills found:", len(skills))
+
+    print("\nExperience detected:", experience, "years")
