@@ -9,6 +9,8 @@ from AI.resume_analyzer import (
 from AI.skill_extractor import extract_skills, extract_experience
 
 
+# 1. Skill extraction tests
+
 def test_skill_extraction():
     text = "I have experience in Python, SQL and Machine Learning."
     skills = extract_skills(text)
@@ -16,6 +18,30 @@ def test_skill_extraction():
     assert "Python" in skills
     assert "SQL" in skills
 
+
+def test_no_matching_skills():
+    result = match_skills(
+        ["Python", "Java"],
+        ["Docker", "FastAPI"]
+    )
+
+    assert result["match_score"] == 0
+    assert result["matched_skills"] == []
+    assert len(result["missing_skills"]) == 2
+
+
+def test_empty_job_skills():
+    result = match_skills(
+        ["Python", "Java"],
+        []
+    )
+
+    assert result["match_score"] == 0
+    assert result["matched_skills"] == []
+    assert result["missing_skills"] == []
+
+
+# 2. Skill matching tests
 
 def test_skill_matching():
     result = match_skills(
@@ -27,10 +53,35 @@ def test_skill_matching():
     assert "fastapi" in result["missing_skills"]
 
 
+def test_resume_without_recognized_skills():
+    resume_skills = extract_skills(
+        "I am a hardworking and motivated professional."
+    )
+
+    assert resume_skills == []
+
+
+def test_job_without_recognized_skills():
+    job_skills = extract_skills(
+        "We need a motivated person for our organization."
+    )
+
+    assert job_skills == []
+
+
+# 3. Experience extraction tests
+
 def test_experience_extraction():
     text = "I have 3 years of experience in software development."
     assert extract_experience(text) == 3.0
 
+
+def test_experience_not_mentioned():
+    text = "I am a Python developer with strong technical skills."
+    assert extract_experience(text) is None
+
+
+# 4. Experience scoring tests
 
 def test_experience_scoring():
     assert calculate_experience_score(3, 2) == 100
@@ -38,6 +89,36 @@ def test_experience_scoring():
     assert calculate_experience_score(0, 2) == 0
     assert calculate_experience_score(None, 2) is None
 
+
+def test_experience_more_than_required():
+    score = calculate_experience_score(10, 2)
+
+    assert score == 100
+
+
+def test_zero_required_experience():
+    score = calculate_experience_score(3, 0)
+
+    assert score == 100.0
+
+
+def test_negative_required_experience():
+    with pytest.raises(
+        ValueError,
+        match="Experience years cannot be negative."
+    ):
+        calculate_experience_score(3, -2)
+
+
+def test_negative_resume_experience():
+    with pytest.raises(
+        ValueError,
+        match="Experience years cannot be negative."
+    ):
+        calculate_experience_score(-1, 2)
+
+
+# 5. Complete resume analysis tests
 
 def test_complete_resume_analysis():
     resume = """
@@ -75,35 +156,47 @@ def test_complete_resume_analysis():
     assert isinstance(result["suggestions"], list)
 
 
-def test_no_matching_skills():
-    result = match_skills(
-        ["Python", "Java"],
-        ["Docker", "FastAPI"]
+def test_missing_experience_in_both_documents():
+    resume = "Python developer skilled in SQL and Django."
+
+    job = "Looking for a Python developer skilled in SQL and Django."
+
+    result = analyze_resume(resume, job)
+
+    assert result["resume_experience"] is None
+    assert result["required_experience"] is None
+    assert result["experience_score"] is None
+
+    assert any(
+        "experience" in suggestion.lower()
+        for suggestion in result["suggestions"]
     )
 
-    assert result["match_score"] == 0
-    assert result["matched_skills"] == []
-    assert len(result["missing_skills"]) == 2
 
+def test_resume_experience_below_requirement():
+    resume = """
+    Python developer with 1 year of experience.
+    Skilled in Python and SQL.
+    """
 
-def test_empty_job_skills():
-    result = match_skills(
-        ["Python", "Java"],
-        []
+    job = """
+    Python developer with 3 years of experience.
+    Required skills include Python and SQL.
+    """
+
+    result = analyze_resume(resume, job)
+
+    assert result["resume_experience"] == 1.0
+    assert result["required_experience"] == 3.0
+    assert result["experience_score"] == 33.33
+
+    assert any(
+        "job asks for" in suggestion.lower()
+        for suggestion in result["suggestions"]
     )
 
-    assert result["match_score"] == 0
-    assert result["matched_skills"] == []
-    assert result["missing_skills"] == []
 
-
-def test_experience_more_than_required():
-    score = calculate_experience_score(10, 2)
-
-    assert score == 100
-
-
-# Input validation tests
+# 6. Input validation tests
 
 def test_empty_resume_text():
     with pytest.raises(ValueError, match="Resume text cannot be empty."):

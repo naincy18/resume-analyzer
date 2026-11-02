@@ -5,13 +5,22 @@ from AI.semantic_matcher import calculate_similarity
 
 
 def calculate_experience_score(resume_years, required_years):
+
+    # Handle missing experience information
     if resume_years is None or required_years is None:
         return None
 
-    if required_years <= 0:
+    # Reject negative experience values
+    if resume_years < 0 or required_years < 0:
+        raise ValueError("Experience years cannot be negative.")
+
+    # If no experience is required, give full score
+    if required_years == 0:
         return 100.0
 
+    # Calculate experience score
     score = min(resume_years / required_years, 1) * 100
+
     return round(score, 2)
 
 
@@ -47,6 +56,7 @@ def analyze_resume(resume_text, job_description):
         resume_years, required_years
     )
 
+    # Use a neutral fallback if experience is unavailable
     experience_score_for_total = (
         experience_score if experience_score is not None else 50
     )
@@ -146,7 +156,8 @@ if __name__ == "__main__":
             (1, 2),
             (0, 2),
             (None, 2),
-            (3, None)
+            (3, None),
+            (3, 0)
         ]:
             print(
                 f"Resume: {resume_years}, Required: {required_years}, "
