@@ -1,4 +1,6 @@
 
+import pytest
+
 from AI.job_matcher import match_skills
 from AI.resume_analyzer import (
     calculate_experience_score,
@@ -99,3 +101,35 @@ def test_experience_more_than_required():
     score = calculate_experience_score(10, 2)
 
     assert score == 100
+
+
+# Input validation tests
+
+def test_empty_resume_text():
+    with pytest.raises(ValueError, match="Resume text cannot be empty."):
+        analyze_resume("", "Python developer required")
+
+
+def test_empty_job_description():
+    with pytest.raises(ValueError, match="Job description cannot be empty."):
+        analyze_resume("Python developer with experience", "")
+
+
+def test_resume_with_only_spaces():
+    with pytest.raises(ValueError, match="Resume text cannot be empty."):
+        analyze_resume("    ", "Python developer required")
+
+
+def test_job_description_with_only_spaces():
+    with pytest.raises(ValueError, match="Job description cannot be empty."):
+        analyze_resume("Python developer with experience", "    ")
+
+
+def test_none_resume_text():
+    with pytest.raises(ValueError, match="Resume text cannot be empty."):
+        analyze_resume(None, "Python developer required")
+
+
+def test_none_job_description():
+    with pytest.raises(ValueError, match="Job description cannot be empty."):
+        analyze_resume("Python developer with experience", None)
