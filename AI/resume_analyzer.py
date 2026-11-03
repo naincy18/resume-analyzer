@@ -6,75 +6,103 @@ from AI.semantic_matcher import calculate_similarity
 
 def calculate_experience_score(resume_years, required_years):
 
-    # Handle missing experience information
     if resume_years is None or required_years is None:
         return None
 
-    # Reject negative experience values
     if resume_years < 0 or required_years < 0:
         raise ValueError("Experience years cannot be negative.")
 
-    # If no experience is required, give full score
     if required_years == 0:
         return 100.0
 
-    # Calculate experience score
     score = min(resume_years / required_years, 1) * 100
 
     return round(score, 2)
 
 
+def calculate_final_score(
+    skill_score,
+    semantic_score,
+    experience_score
+):
+    # Define component weights
+    weights = {
+        "skill": 0.60,
+        "semantic": 0.30,
+        "experience": 0.10
+    }
+
+    scores = {
+        "skill": skill_score,
+        "semantic": semantic_score,
+        "experience": experience_score
+    }
+
+    weighted_total = 0
+    available_weight = 0
+
+    for component, score in scores.items():
+
+        if score is None:
+            continue
+
+        # Keep every component within 0–100
+        bounded_score = max(0, min(float(score), 100))
+
+        weighted_total += bounded_score * weights[component]
+        available_weight += weights[component]
+
+    if available_weight == 0:
+        return None
+
+    final_score = weighted_total / available_weight
+
+    return round(final_score, 2)
+
+
 def analyze_resume(resume_text, job_description):
 
-    # Validate resume text
     if not isinstance(resume_text, str) or not resume_text.strip():
         raise ValueError("Resume text cannot be empty.")
 
-    # Validate job description
     if not isinstance(job_description, str) or not job_description.strip():
         raise ValueError("Job description cannot be empty.")
 
-    # Extract skills
     resume_skills = extract_skills(resume_text)
     job_skills = extract_skills(job_description)
 
-    # Match skills
     skill_result = match_skills(resume_skills, job_skills)
     skill_score = skill_result["match_score"]
 
-    # Calculate semantic similarity
     semantic_score = calculate_similarity(
         resume_text, job_description
     )
 
-    # Extract experience
     resume_years = extract_experience(resume_text)
     required_years = extract_experience(job_description)
 
-    # Calculate experience score
     experience_score = calculate_experience_score(
         resume_years, required_years
     )
 
-    # Use a neutral fallback if experience is unavailable
-    experience_score_for_total = (
-        experience_score if experience_score is not None else 50
+    final_score = calculate_final_score(
+        skill_score,
+        semantic_score,
+        experience_score
     )
 
-    # Calculate final match score
-    final_score = (
-        0.60 * skill_score
-        + 0.30 * semantic_score
-        + 0.10 * experience_score_for_total
-    )
-
-    # Generate suggestions
     suggestions = []
 
     if skill_result["missing_skills"]:
         suggestions.append(
             "Consider developing these missing skills: "
             + ", ".join(skill_result["missing_skills"])
+        )
+
+    if skill_score is None:
+        suggestions.append(
+            "No recognized job skills were found. "
+            "Review the job description or expand the skill vocabulary."
         )
 
     if resume_years is None:
@@ -95,9 +123,8 @@ def analyze_resume(resume_text, job_description):
             "Keep your experience and project descriptions specific."
         )
 
-    # Return analysis result
     return {
-        "match_score": round(final_score, 2),
+        "match_score": final_score,
         "skill_match_score": skill_score,
         "semantic_similarity": semantic_score,
         "experience_score": experience_score,
@@ -109,7 +136,6 @@ def analyze_resume(resume_text, job_description):
     }
 
 
-# Sample data
 resume_text = """
 I am a software developer with 3 years of experience.
 I have worked with Python, SQL, Machine Learning,
@@ -131,11 +157,11 @@ if __name__ == "__main__":
         result = analyze_resume(resume_text, job_description)
 
         print("\n========== RESUME ANALYSIS REPORT ==========")
-        print("Final Match Score:", result["match_score"], "%")
-        print("Skill Match Score:", result["skill_match_score"], "%")
-        print("Semantic Similarity:", result["semantic_similarity"], "%")
-        print("Resume Experience:", result["resume_experience"], "years")
-        print("Required Experience:", result["required_experience"], "years")
+        print("Final Match Score:", result["match_score"])
+        print("Skill Match Score:", result["skill_match_score"])
+        print("Semantic Similarity:", result["semantic_similarity"])
+        print("Resume Experience:", result["resume_experience"])
+        print("Required Experience:", result["required_experience"])
         print("Experience Score:", result["experience_score"])
 
         print("\nMatched Skills:")
@@ -147,22 +173,6 @@ if __name__ == "__main__":
         print("\nSuggestions:")
         for suggestion in result["suggestions"]:
             print("-", suggestion)
-
-        print("\nEXPERIENCE SCORE TESTS")
-
-        for resume_years, required_years in [
-            (3, 2),
-            (2, 2),
-            (1, 2),
-            (0, 2),
-            (None, 2),
-            (3, None),
-            (3, 0)
-        ]:
-            print(
-                f"Resume: {resume_years}, Required: {required_years}, "
-                f"Score: {calculate_experience_score(resume_years, required_years)}"
-            )
 
     except ValueError as error:
         print("Input Error:", error)
