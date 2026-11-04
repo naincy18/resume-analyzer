@@ -97,6 +97,15 @@ def run_evaluation():
         print("Matched Skills:", result["matched_skills"])
         print("Missing Skills:", result["missing_skills"])
 
+        # Check whether the strong match scenario behaves as expected
+        if case["name"] == "Strong Match":
+            passed = (
+                result["match_score"] >= 80
+                and len(result["missing_skills"]) == 0
+            )
+
+            print("Evaluation Result:", "PASS" if passed else "FAIL")
+
         print("Suggestions:")
         for suggestion in result["suggestions"]:
             print("-", suggestion)
@@ -106,3 +115,4 @@ def run_evaluation():
 
 if __name__ == "__main__":
     run_evaluation()
+
