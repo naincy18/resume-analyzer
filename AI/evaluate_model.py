@@ -74,6 +74,10 @@ def run_evaluation():
 
     print("\n========== AI MODEL EVALUATION ==========")
 
+    # Display total evaluation cases
+    total_cases = len(evaluation_cases)
+    print("Total Test Cases:", total_cases)
+
     for case in evaluation_cases:
 
         print("\n----------------------------------------")
