@@ -127,6 +127,16 @@ def run_evaluation():
 
             print("Evaluation Result:", "PASS" if passed else "FAIL")
 
+        # Check whether the experience gap scenario behaves as expected
+        elif case["name"] == "Experience Gap":
+            passed = (
+                result["experience_score"] is not None
+                and result["experience_score"] < 50
+                and result["skill_match_score"] == 100
+            )
+
+            print("Evaluation Result:", "PASS" if passed else "FAIL")
+
         print("Suggestions:")
         for suggestion in result["suggestions"]:
             print("-", suggestion)
