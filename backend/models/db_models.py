@@ -41,7 +41,9 @@ class Analysis(Base):
     resume_id: Mapped[int] = mapped_column(ForeignKey("resumes.id"), index=True)
     job_description: Mapped[str] = mapped_column(Text)
     match_score: Mapped[float] = mapped_column(Float)
+    semantic_similarity: Mapped[float | None] = mapped_column(Float, nullable=True)
     matched_skills: Mapped[list] = mapped_column(JSONB, default=list)
+    
     missing_skills: Mapped[list] = mapped_column(JSONB, default=list)
     suggestions: Mapped[list] = mapped_column(JSONB, default=list)
     created_at: Mapped[datetime] = mapped_column(

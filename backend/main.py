@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from config import settings
 from routes.resume_routes import router as resume_router
+from routes.analysis_routes import router as analysis_router  # NEW LINE 1
 
 app = FastAPI(
     title=settings.app_name,
@@ -10,7 +11,6 @@ app = FastAPI(
     version="0.1.0",
 )
 
-# Configure CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.origins_list,
@@ -19,8 +19,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Register resume routes
 app.include_router(resume_router)
+app.include_router(analysis_router)  # NEW LINE 2
 
 
 @app.get("/api/health")
