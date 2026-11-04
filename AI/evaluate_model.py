@@ -137,6 +137,15 @@ def run_evaluation():
 
             print("Evaluation Result:", "PASS" if passed else "FAIL")
 
+        # Check whether missing experience information is handled correctly
+        elif case["name"] == "Missing Experience Information":
+            passed = (
+                result["experience_score"] is None
+                and result["match_score"] is not None
+            )
+
+            print("Evaluation Result:", "PASS" if passed else "FAIL")
+
         print("Suggestions:")
         for suggestion in result["suggestions"]:
             print("-", suggestion)
@@ -146,6 +155,7 @@ def run_evaluation():
 
 if __name__ == "__main__":
     run_evaluation()
+
 
 
 
