@@ -117,6 +117,16 @@ def run_evaluation():
 
             print("Evaluation Result:", "PASS" if passed else "FAIL")
 
+        # Check whether the poor match scenario behaves as expected
+        elif case["name"] == "Poor Match":
+            passed = (
+                result["skill_match_score"] == 0
+                and len(result["matched_skills"]) == 0
+                and len(result["missing_skills"]) > 0
+            )
+
+            print("Evaluation Result:", "PASS" if passed else "FAIL")
+
         print("Suggestions:")
         for suggestion in result["suggestions"]:
             print("-", suggestion)
@@ -126,5 +136,6 @@ def run_evaluation():
 
 if __name__ == "__main__":
     run_evaluation()
+
 
 
