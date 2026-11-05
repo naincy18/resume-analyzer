@@ -1,6 +1,6 @@
-
 from pathlib import Path
 from datetime import datetime
+from time import perf_counter
 
 from AI.resume_analyzer import analyze_resume
 
@@ -87,6 +87,9 @@ evaluation_cases = [
 
 
 def run_evaluation():
+
+    # Start measuring evaluation duration
+    start_time = perf_counter()
 
     report = []
 
@@ -177,6 +180,9 @@ def run_evaluation():
         for suggestion in result["suggestions"]:
             log("- " + suggestion)
 
+    # Calculate total evaluation duration
+    evaluation_duration = perf_counter() - start_time
+
     # Evaluation summary
     log("\n========== EVALUATION SUMMARY ==========")
     log("Total Test Cases: " + str(total_cases))
@@ -193,6 +199,8 @@ def run_evaluation():
     overall_result = "PASS" if failed_cases == 0 else "FAIL"
     log("Overall Result: " + overall_result)
 
+    log("Evaluation Duration: " + str(round(evaluation_duration, 2)) + " seconds")
+
     log("\n========== EVALUATION COMPLETED ==========")
 
     # Save evaluation report
@@ -208,5 +216,3 @@ def run_evaluation():
 
 if __name__ == "__main__":
     run_evaluation()
-
-
