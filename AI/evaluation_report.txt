@@ -1,7 +1,7 @@
 
 ========== AI MODEL EVALUATION ==========
-Evaluation Date and Time: 2026-11-05 17:27:08
-Total Test Cases: 9
+Evaluation Date and Time: 2026-11-05 17:31:10
+Total Test Cases: 10
 
 ----------------------------------------
 Test Case: Strong Match
@@ -107,12 +107,18 @@ Expected Behavior: Analyzer should reject a non-string resume input.
 Validation Message: Resume text must be a string.
 Evaluation Result: PASS
 
+----------------------------------------
+Test Case: Whitespace-Only Resume
+Expected Behavior: Analyzer should reject a resume containing only spaces.
+Validation Message: Resume text cannot be empty.
+Evaluation Result: PASS
+
 ========== EVALUATION SUMMARY ==========
-Total Test Cases: 9
-Passed: 9
+Total Test Cases: 10
+Passed: 10
 Failed: 0
 Pass Percentage: 100.0%
 Overall Result: PASS
-Evaluation Duration: 2.74 seconds
+Evaluation Duration: 2.3 seconds
 
 ========== EVALUATION COMPLETED ==========
