@@ -74,8 +74,10 @@ def run_evaluation():
 
     print("\n========== AI MODEL EVALUATION ==========")
 
-    # Display total evaluation cases
     total_cases = len(evaluation_cases)
+    passed_cases = 0
+    failed_cases = 0
+
     print("Total Test Cases:", total_cases)
 
     for case in evaluation_cases:
@@ -97,16 +99,14 @@ def run_evaluation():
         print("Matched Skills:", result["matched_skills"])
         print("Missing Skills:", result["missing_skills"])
 
-        # Check whether the strong match scenario behaves as expected
+        # Check strong match scenario
         if case["name"] == "Strong Match":
             passed = (
                 result["match_score"] >= 80
                 and len(result["missing_skills"]) == 0
             )
 
-            print("Evaluation Result:", "PASS" if passed else "FAIL")
-
-        # Check whether the partial match scenario behaves as expected
+        # Check partial match scenario
         elif case["name"] == "Partial Match":
             passed = (
                 result["skill_match_score"] > 0
@@ -115,9 +115,7 @@ def run_evaluation():
                 and len(result["missing_skills"]) > 0
             )
 
-            print("Evaluation Result:", "PASS" if passed else "FAIL")
-
-        # Check whether the poor match scenario behaves as expected
+        # Check poor match scenario
         elif case["name"] == "Poor Match":
             passed = (
                 result["skill_match_score"] == 0
@@ -125,9 +123,7 @@ def run_evaluation():
                 and len(result["missing_skills"]) > 0
             )
 
-            print("Evaluation Result:", "PASS" if passed else "FAIL")
-
-        # Check whether the experience gap scenario behaves as expected
+        # Check experience gap scenario
         elif case["name"] == "Experience Gap":
             passed = (
                 result["experience_score"] is not None
@@ -135,27 +131,39 @@ def run_evaluation():
                 and result["skill_match_score"] == 100
             )
 
-            print("Evaluation Result:", "PASS" if passed else "FAIL")
-
-        # Check whether missing experience information is handled correctly
+        # Check missing experience information
         elif case["name"] == "Missing Experience Information":
             passed = (
                 result["experience_score"] is None
                 and result["match_score"] is not None
             )
 
-            print("Evaluation Result:", "PASS" if passed else "FAIL")
+        # Count evaluation results
+        if passed:
+            passed_cases += 1
+        else:
+            failed_cases += 1
+
+        print(
+            "Evaluation Result:",
+            "PASS" if passed else "FAIL"
+        )
 
         print("Suggestions:")
         for suggestion in result["suggestions"]:
             print("-", suggestion)
+
+    # Display final evaluation summary
+    print("\n========== EVALUATION SUMMARY ==========")
+    print("Total Test Cases:", total_cases)
+    print("Passed:", passed_cases)
+    print("Failed:", failed_cases)
+
+    overall_result = "PASS" if failed_cases == 0 else "FAIL"
+    print("Overall Result:", overall_result)
 
     print("\n========== EVALUATION COMPLETED ==========")
 
 
 if __name__ == "__main__":
     run_evaluation()
-
-
-
-
