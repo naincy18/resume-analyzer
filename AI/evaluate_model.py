@@ -91,12 +91,22 @@ evaluation_cases = [
         "job": """
         Python developer required with Python, SQL and FastAPI.
         """
+    },
+    {
+        "name": "Empty Job Description",
+        "expected": "Analyzer should reject an empty job description.",
+        "resume": """
+        Python developer with 3 years of experience.
+        Skilled in Python, SQL and FastAPI.
+        """,
+        "job": ""
     }
 ]
 
 
 def run_evaluation():
 
+    # Start measuring evaluation duration
     start_time = perf_counter()
 
     report = []
@@ -107,6 +117,7 @@ def run_evaluation():
 
     log("\n========== AI MODEL EVALUATION ==========")
 
+    # Record evaluation date and time
     evaluation_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     log("Evaluation Date and Time: " + evaluation_time)
 
@@ -122,14 +133,21 @@ def run_evaluation():
         log("Test Case: " + case["name"])
         log("Expected Behavior: " + case["expected"])
 
-        if case["name"] == "Empty Resume":
+        # Test empty input validation
+        if case["name"] in ["Empty Resume", "Empty Job Description"]:
 
             try:
                 analyze_resume(case["resume"], case["job"])
                 passed = False
 
             except ValueError as error:
-                passed = str(error) == "Resume text cannot be empty."
+
+                if case["name"] == "Empty Resume":
+                    expected_error = "Resume text cannot be empty."
+                else:
+                    expected_error = "Job description cannot be empty."
+
+                passed = str(error) == expected_error
                 log("Validation Message: " + str(error))
 
         else:
@@ -199,8 +217,10 @@ def run_evaluation():
 
         log("Evaluation Result: " + ("PASS" if passed else "FAIL"))
 
+    # Calculate total evaluation duration
     evaluation_duration = perf_counter() - start_time
 
+    # Evaluation summary
     log("\n========== EVALUATION SUMMARY ==========")
     log("Total Test Cases: " + str(total_cases))
     log("Passed: " + str(passed_cases))
@@ -220,6 +240,7 @@ def run_evaluation():
 
     log("\n========== EVALUATION COMPLETED ==========")
 
+    # Save evaluation report
     report_path = Path(__file__).with_name("evaluation_report.txt")
 
     report_path.write_text(
@@ -232,3 +253,4 @@ def run_evaluation():
 
 if __name__ == "__main__":
     run_evaluation()
+
