@@ -1,4 +1,6 @@
 
+from pathlib import Path
+
 from AI.resume_analyzer import analyze_resume
 
 
@@ -72,41 +74,47 @@ evaluation_cases = [
 
 def run_evaluation():
 
-    print("\n========== AI MODEL EVALUATION ==========")
+    report = []
+
+    def log(message=""):
+        print(message)
+        report.append(str(message))
+
+    log("\n========== AI MODEL EVALUATION ==========")
 
     total_cases = len(evaluation_cases)
     passed_cases = 0
     failed_cases = 0
 
-    print("Total Test Cases:", total_cases)
+    log("Total Test Cases: " + str(total_cases))
 
     for case in evaluation_cases:
 
-        print("\n----------------------------------------")
-        print("Test Case:", case["name"])
-        print("Expected Behavior:", case["expected"])
+        log("\n----------------------------------------")
+        log("Test Case: " + case["name"])
+        log("Expected Behavior: " + case["expected"])
 
         result = analyze_resume(
             case["resume"],
             case["job"]
         )
 
-        print("\nFinal Match Score:", result["match_score"])
-        print("Skill Match Score:", result["skill_match_score"])
-        print("Semantic Similarity:", result["semantic_similarity"])
-        print("Experience Score:", result["experience_score"])
+        log("\nFinal Match Score: " + str(result["match_score"]))
+        log("Skill Match Score: " + str(result["skill_match_score"]))
+        log("Semantic Similarity: " + str(result["semantic_similarity"]))
+        log("Experience Score: " + str(result["experience_score"]))
 
-        print("Matched Skills:", result["matched_skills"])
-        print("Missing Skills:", result["missing_skills"])
+        log("Matched Skills: " + str(result["matched_skills"]))
+        log("Missing Skills: " + str(result["missing_skills"]))
 
-        # Check strong match scenario
+        # Strong Match check
         if case["name"] == "Strong Match":
             passed = (
                 result["match_score"] >= 80
                 and len(result["missing_skills"]) == 0
             )
 
-        # Check partial match scenario
+        # Partial Match check
         elif case["name"] == "Partial Match":
             passed = (
                 result["skill_match_score"] > 0
@@ -115,7 +123,7 @@ def run_evaluation():
                 and len(result["missing_skills"]) > 0
             )
 
-        # Check poor match scenario
+        # Poor Match check
         elif case["name"] == "Poor Match":
             passed = (
                 result["skill_match_score"] == 0
@@ -123,7 +131,7 @@ def run_evaluation():
                 and len(result["missing_skills"]) > 0
             )
 
-        # Check experience gap scenario
+        # Experience Gap check
         elif case["name"] == "Experience Gap":
             passed = (
                 result["experience_score"] is not None
@@ -131,38 +139,44 @@ def run_evaluation():
                 and result["skill_match_score"] == 100
             )
 
-        # Check missing experience information
+        # Missing Experience Information check
         elif case["name"] == "Missing Experience Information":
             passed = (
                 result["experience_score"] is None
                 and result["match_score"] is not None
             )
 
-        # Count evaluation results
         if passed:
             passed_cases += 1
         else:
             failed_cases += 1
 
-        print(
-            "Evaluation Result:",
-            "PASS" if passed else "FAIL"
-        )
+        log("Evaluation Result: " + ("PASS" if passed else "FAIL"))
 
-        print("Suggestions:")
+        log("Suggestions:")
         for suggestion in result["suggestions"]:
-            print("-", suggestion)
+            log("- " + suggestion)
 
-    # Display final evaluation summary
-    print("\n========== EVALUATION SUMMARY ==========")
-    print("Total Test Cases:", total_cases)
-    print("Passed:", passed_cases)
-    print("Failed:", failed_cases)
+    # Evaluation summary
+    log("\n========== EVALUATION SUMMARY ==========")
+    log("Total Test Cases: " + str(total_cases))
+    log("Passed: " + str(passed_cases))
+    log("Failed: " + str(failed_cases))
 
     overall_result = "PASS" if failed_cases == 0 else "FAIL"
-    print("Overall Result:", overall_result)
+    log("Overall Result: " + overall_result)
 
-    print("\n========== EVALUATION COMPLETED ==========")
+    log("\n========== EVALUATION COMPLETED ==========")
+
+    # Save evaluation report
+    report_path = Path(__file__).with_name("evaluation_report.txt")
+
+    report_path.write_text(
+        "\n".join(report),
+        encoding="utf-8"
+    )
+
+    print("\nEvaluation report saved to:", report_path)
 
 
 if __name__ == "__main__":

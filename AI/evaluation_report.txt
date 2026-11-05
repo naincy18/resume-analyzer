@@ -1,0 +1,83 @@
+
+========== AI MODEL EVALUATION ==========
+Total Test Cases: 5
+
+----------------------------------------
+Test Case: Strong Match
+Expected Behavior: Most required skills should match.
+
+Final Match Score: 99.08
+Skill Match Score: 100.0
+Semantic Similarity: 96.92
+Experience Score: 100
+Matched Skills: ['docker', 'fastapi', 'machine learning', 'python', 'sql']
+Missing Skills: []
+Evaluation Result: PASS
+Suggestions:
+- Your resume covers the listed job skills well. Keep your experience and project descriptions specific.
+
+----------------------------------------
+Test Case: Partial Match
+Expected Behavior: Some required skills should be missing.
+
+Final Match Score: 53.83
+Skill Match Score: 40.0
+Semantic Similarity: 82.76
+Experience Score: 50.0
+Matched Skills: ['python', 'sql']
+Missing Skills: ['docker', 'fastapi', 'machine learning']
+Evaluation Result: PASS
+Suggestions:
+- Consider developing these missing skills: docker, fastapi, machine learning
+- The job asks for 2 years of experience, while your resume states 1 years.
+
+----------------------------------------
+Test Case: Poor Match
+Expected Behavior: Most required technical skills should be missing.
+
+Final Match Score: 19.69
+Skill Match Score: 0.0
+Semantic Similarity: 43.4
+Experience Score: 66.67
+Matched Skills: []
+Missing Skills: ['django', 'docker', 'fastapi', 'python', 'sql']
+Evaluation Result: PASS
+Suggestions:
+- Consider developing these missing skills: django, docker, fastapi, python, sql
+- The job asks for 3 years of experience, while your resume states 2 years.
+
+----------------------------------------
+Test Case: Experience Gap
+Expected Behavior: Skills should match, but experience score should be lower.
+
+Final Match Score: 91.06
+Skill Match Score: 100.0
+Semantic Similarity: 96.88
+Experience Score: 20.0
+Matched Skills: ['docker', 'fastapi', 'python', 'sql']
+Missing Skills: []
+Evaluation Result: PASS
+Suggestions:
+- The job asks for 5 years of experience, while your resume states 1 years.
+
+----------------------------------------
+Test Case: Missing Experience Information
+Expected Behavior: Experience score should be unavailable.
+
+Final Match Score: 95.28
+Skill Match Score: 100.0
+Semantic Similarity: 85.85
+Experience Score: None
+Matched Skills: ['fastapi', 'machine learning', 'python', 'sql']
+Missing Skills: []
+Evaluation Result: PASS
+Suggestions:
+- Add your years of relevant professional experience to your resume, if applicable.
+
+========== EVALUATION SUMMARY ==========
+Total Test Cases: 5
+Passed: 5
+Failed: 0
+Overall Result: PASS
+
+========== EVALUATION COMPLETED ==========
