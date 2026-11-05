@@ -68,6 +68,19 @@ evaluation_cases = [
         Developer required with Python, SQL,
         Machine Learning and FastAPI.
         """
+    },
+    {
+        "name": "No Matching Skills",
+        "expected": "No required job skills should match the resume.",
+        "resume": """
+        I have 2 years of experience in customer service.
+        Skilled in Excel, Communication and Teamwork.
+        """,
+        "job": """
+        Software developer with 2 years of experience.
+        Required skills: Python, Django, SQL,
+        Docker and FastAPI.
+        """
     }
 ]
 
@@ -107,14 +120,12 @@ def run_evaluation():
         log("Matched Skills: " + str(result["matched_skills"]))
         log("Missing Skills: " + str(result["missing_skills"]))
 
-        # Strong Match check
         if case["name"] == "Strong Match":
             passed = (
                 result["match_score"] >= 80
                 and len(result["missing_skills"]) == 0
             )
 
-        # Partial Match check
         elif case["name"] == "Partial Match":
             passed = (
                 result["skill_match_score"] > 0
@@ -123,7 +134,6 @@ def run_evaluation():
                 and len(result["missing_skills"]) > 0
             )
 
-        # Poor Match check
         elif case["name"] == "Poor Match":
             passed = (
                 result["skill_match_score"] == 0
@@ -131,7 +141,6 @@ def run_evaluation():
                 and len(result["missing_skills"]) > 0
             )
 
-        # Experience Gap check
         elif case["name"] == "Experience Gap":
             passed = (
                 result["experience_score"] is not None
@@ -139,11 +148,17 @@ def run_evaluation():
                 and result["skill_match_score"] == 100
             )
 
-        # Missing Experience Information check
         elif case["name"] == "Missing Experience Information":
             passed = (
                 result["experience_score"] is None
                 and result["match_score"] is not None
+            )
+
+        elif case["name"] == "No Matching Skills":
+            passed = (
+                result["skill_match_score"] == 0
+                and len(result["matched_skills"]) == 0
+                and len(result["missing_skills"]) > 0
             )
 
         if passed:
@@ -157,7 +172,6 @@ def run_evaluation():
         for suggestion in result["suggestions"]:
             log("- " + suggestion)
 
-    # Evaluation summary
     log("\n========== EVALUATION SUMMARY ==========")
     log("Total Test Cases: " + str(total_cases))
     log("Passed: " + str(passed_cases))
@@ -168,7 +182,6 @@ def run_evaluation():
 
     log("\n========== EVALUATION COMPLETED ==========")
 
-    # Save evaluation report
     report_path = Path(__file__).with_name("evaluation_report.txt")
 
     report_path.write_text(

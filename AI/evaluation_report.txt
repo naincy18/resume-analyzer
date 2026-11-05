@@ -1,6 +1,6 @@
 
 ========== AI MODEL EVALUATION ==========
-Total Test Cases: 5
+Total Test Cases: 6
 
 ----------------------------------------
 Test Case: Strong Match
@@ -74,9 +74,23 @@ Evaluation Result: PASS
 Suggestions:
 - Add your years of relevant professional experience to your resume, if applicable.
 
+----------------------------------------
+Test Case: No Matching Skills
+Expected Behavior: No required job skills should match the resume.
+
+Final Match Score: 24.93
+Skill Match Score: 0.0
+Semantic Similarity: 49.78
+Experience Score: 100.0
+Matched Skills: []
+Missing Skills: ['django', 'docker', 'fastapi', 'python', 'sql']
+Evaluation Result: PASS
+Suggestions:
+- Consider developing these missing skills: django, docker, fastapi, python, sql
+
 ========== EVALUATION SUMMARY ==========
-Total Test Cases: 5
-Passed: 5
+Total Test Cases: 6
+Passed: 6
 Failed: 0
 Overall Result: PASS
 
