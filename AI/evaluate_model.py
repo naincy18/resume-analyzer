@@ -172,16 +172,25 @@ def run_evaluation():
         for suggestion in result["suggestions"]:
             log("- " + suggestion)
 
+    # Evaluation summary
     log("\n========== EVALUATION SUMMARY ==========")
     log("Total Test Cases: " + str(total_cases))
     log("Passed: " + str(passed_cases))
     log("Failed: " + str(failed_cases))
+
+    pass_percentage = (
+        (passed_cases / total_cases) * 100
+        if total_cases > 0 else 0
+    )
+
+    log("Pass Percentage: " + str(round(pass_percentage, 2)) + "%")
 
     overall_result = "PASS" if failed_cases == 0 else "FAIL"
     log("Overall Result: " + overall_result)
 
     log("\n========== EVALUATION COMPLETED ==========")
 
+    # Save evaluation report
     report_path = Path(__file__).with_name("evaluation_report.txt")
 
     report_path.write_text(
@@ -194,3 +203,4 @@ def run_evaluation():
 
 if __name__ == "__main__":
     run_evaluation()
+
