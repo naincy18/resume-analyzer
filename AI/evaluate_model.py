@@ -1,3 +1,4 @@
+
 from pathlib import Path
 from datetime import datetime
 from time import perf_counter
@@ -82,13 +83,20 @@ evaluation_cases = [
         Required skills: Python, Django, SQL,
         Docker and FastAPI.
         """
+    },
+    {
+        "name": "Empty Resume",
+        "expected": "Analyzer should reject an empty resume.",
+        "resume": "",
+        "job": """
+        Python developer required with Python, SQL and FastAPI.
+        """
     }
 ]
 
 
 def run_evaluation():
 
-    # Start measuring evaluation duration
     start_time = perf_counter()
 
     report = []
@@ -99,7 +107,6 @@ def run_evaluation():
 
     log("\n========== AI MODEL EVALUATION ==========")
 
-    # Record evaluation date and time
     evaluation_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     log("Evaluation Date and Time: " + evaluation_time)
 
@@ -115,59 +122,75 @@ def run_evaluation():
         log("Test Case: " + case["name"])
         log("Expected Behavior: " + case["expected"])
 
-        result = analyze_resume(
-            case["resume"],
-            case["job"]
-        )
+        if case["name"] == "Empty Resume":
 
-        log("\nFinal Match Score: " + str(result["match_score"]))
-        log("Skill Match Score: " + str(result["skill_match_score"]))
-        log("Semantic Similarity: " + str(result["semantic_similarity"]))
-        log("Experience Score: " + str(result["experience_score"]))
+            try:
+                analyze_resume(case["resume"], case["job"])
+                passed = False
 
-        log("Matched Skills: " + str(result["matched_skills"]))
-        log("Missing Skills: " + str(result["missing_skills"]))
+            except ValueError as error:
+                passed = str(error) == "Resume text cannot be empty."
+                log("Validation Message: " + str(error))
 
-        if case["name"] == "Strong Match":
-            passed = (
-                result["match_score"] >= 80
-                and len(result["missing_skills"]) == 0
+        else:
+
+            result = analyze_resume(
+                case["resume"],
+                case["job"]
             )
 
-        elif case["name"] == "Partial Match":
-            passed = (
-                result["skill_match_score"] > 0
-                and result["skill_match_score"] < 100
-                and len(result["matched_skills"]) > 0
-                and len(result["missing_skills"]) > 0
-            )
+            log("\nFinal Match Score: " + str(result["match_score"]))
+            log("Skill Match Score: " + str(result["skill_match_score"]))
+            log("Semantic Similarity: " + str(result["semantic_similarity"]))
+            log("Experience Score: " + str(result["experience_score"]))
 
-        elif case["name"] == "Poor Match":
-            passed = (
-                result["skill_match_score"] == 0
-                and len(result["matched_skills"]) == 0
-                and len(result["missing_skills"]) > 0
-            )
+            log("Matched Skills: " + str(result["matched_skills"]))
+            log("Missing Skills: " + str(result["missing_skills"]))
 
-        elif case["name"] == "Experience Gap":
-            passed = (
-                result["experience_score"] is not None
-                and result["experience_score"] < 50
-                and result["skill_match_score"] == 100
-            )
+            if case["name"] == "Strong Match":
+                passed = (
+                    result["match_score"] >= 80
+                    and len(result["missing_skills"]) == 0
+                )
 
-        elif case["name"] == "Missing Experience Information":
-            passed = (
-                result["experience_score"] is None
-                and result["match_score"] is not None
-            )
+            elif case["name"] == "Partial Match":
+                passed = (
+                    result["skill_match_score"] > 0
+                    and result["skill_match_score"] < 100
+                    and len(result["matched_skills"]) > 0
+                    and len(result["missing_skills"]) > 0
+                )
 
-        elif case["name"] == "No Matching Skills":
-            passed = (
-                result["skill_match_score"] == 0
-                and len(result["matched_skills"]) == 0
-                and len(result["missing_skills"]) > 0
-            )
+            elif case["name"] == "Poor Match":
+                passed = (
+                    result["skill_match_score"] == 0
+                    and len(result["matched_skills"]) == 0
+                    and len(result["missing_skills"]) > 0
+                )
+
+            elif case["name"] == "Experience Gap":
+                passed = (
+                    result["experience_score"] is not None
+                    and result["experience_score"] < 50
+                    and result["skill_match_score"] == 100
+                )
+
+            elif case["name"] == "Missing Experience Information":
+                passed = (
+                    result["experience_score"] is None
+                    and result["match_score"] is not None
+                )
+
+            elif case["name"] == "No Matching Skills":
+                passed = (
+                    result["skill_match_score"] == 0
+                    and len(result["matched_skills"]) == 0
+                    and len(result["missing_skills"]) > 0
+                )
+
+            log("Suggestions:")
+            for suggestion in result["suggestions"]:
+                log("- " + suggestion)
 
         if passed:
             passed_cases += 1
@@ -176,14 +199,8 @@ def run_evaluation():
 
         log("Evaluation Result: " + ("PASS" if passed else "FAIL"))
 
-        log("Suggestions:")
-        for suggestion in result["suggestions"]:
-            log("- " + suggestion)
-
-    # Calculate total evaluation duration
     evaluation_duration = perf_counter() - start_time
 
-    # Evaluation summary
     log("\n========== EVALUATION SUMMARY ==========")
     log("Total Test Cases: " + str(total_cases))
     log("Passed: " + str(passed_cases))
@@ -203,7 +220,6 @@ def run_evaluation():
 
     log("\n========== EVALUATION COMPLETED ==========")
 
-    # Save evaluation report
     report_path = Path(__file__).with_name("evaluation_report.txt")
 
     report_path.write_text(

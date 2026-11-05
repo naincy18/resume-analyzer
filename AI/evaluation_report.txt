@@ -1,7 +1,7 @@
 
 ========== AI MODEL EVALUATION ==========
-Evaluation Date and Time: 2026-11-05 17:17:10
-Total Test Cases: 6
+Evaluation Date and Time: 2026-11-05 17:20:12
+Total Test Cases: 7
 
 ----------------------------------------
 Test Case: Strong Match
@@ -13,9 +13,9 @@ Semantic Similarity: 96.92
 Experience Score: 100
 Matched Skills: ['docker', 'fastapi', 'machine learning', 'python', 'sql']
 Missing Skills: []
-Evaluation Result: PASS
 Suggestions:
 - Your resume covers the listed job skills well. Keep your experience and project descriptions specific.
+Evaluation Result: PASS
 
 ----------------------------------------
 Test Case: Partial Match
@@ -27,10 +27,10 @@ Semantic Similarity: 82.76
 Experience Score: 50.0
 Matched Skills: ['python', 'sql']
 Missing Skills: ['docker', 'fastapi', 'machine learning']
-Evaluation Result: PASS
 Suggestions:
 - Consider developing these missing skills: docker, fastapi, machine learning
 - The job asks for 2 years of experience, while your resume states 1 years.
+Evaluation Result: PASS
 
 ----------------------------------------
 Test Case: Poor Match
@@ -42,10 +42,10 @@ Semantic Similarity: 43.4
 Experience Score: 66.67
 Matched Skills: []
 Missing Skills: ['django', 'docker', 'fastapi', 'python', 'sql']
-Evaluation Result: PASS
 Suggestions:
 - Consider developing these missing skills: django, docker, fastapi, python, sql
 - The job asks for 3 years of experience, while your resume states 2 years.
+Evaluation Result: PASS
 
 ----------------------------------------
 Test Case: Experience Gap
@@ -57,9 +57,9 @@ Semantic Similarity: 96.88
 Experience Score: 20.0
 Matched Skills: ['docker', 'fastapi', 'python', 'sql']
 Missing Skills: []
-Evaluation Result: PASS
 Suggestions:
 - The job asks for 5 years of experience, while your resume states 1 years.
+Evaluation Result: PASS
 
 ----------------------------------------
 Test Case: Missing Experience Information
@@ -71,9 +71,9 @@ Semantic Similarity: 85.85
 Experience Score: None
 Matched Skills: ['fastapi', 'machine learning', 'python', 'sql']
 Missing Skills: []
-Evaluation Result: PASS
 Suggestions:
 - Add your years of relevant professional experience to your resume, if applicable.
+Evaluation Result: PASS
 
 ----------------------------------------
 Test Case: No Matching Skills
@@ -85,16 +85,22 @@ Semantic Similarity: 49.78
 Experience Score: 100.0
 Matched Skills: []
 Missing Skills: ['django', 'docker', 'fastapi', 'python', 'sql']
-Evaluation Result: PASS
 Suggestions:
 - Consider developing these missing skills: django, docker, fastapi, python, sql
+Evaluation Result: PASS
+
+----------------------------------------
+Test Case: Empty Resume
+Expected Behavior: Analyzer should reject an empty resume.
+Validation Message: Resume text cannot be empty.
+Evaluation Result: PASS
 
 ========== EVALUATION SUMMARY ==========
-Total Test Cases: 6
-Passed: 6
+Total Test Cases: 7
+Passed: 7
 Failed: 0
 Pass Percentage: 100.0%
 Overall Result: PASS
-Evaluation Duration: 3.03 seconds
+Evaluation Duration: 2.45 seconds
 
 ========== EVALUATION COMPLETED ==========
