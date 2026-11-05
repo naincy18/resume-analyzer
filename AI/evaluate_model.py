@@ -1,5 +1,6 @@
 
 from pathlib import Path
+from datetime import datetime
 
 from AI.resume_analyzer import analyze_resume
 
@@ -94,6 +95,10 @@ def run_evaluation():
         report.append(str(message))
 
     log("\n========== AI MODEL EVALUATION ==========")
+
+    # Record evaluation date and time
+    evaluation_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    log("Evaluation Date and Time: " + evaluation_time)
 
     total_cases = len(evaluation_cases)
     passed_cases = 0
@@ -203,4 +208,5 @@ def run_evaluation():
 
 if __name__ == "__main__":
     run_evaluation()
+
 
