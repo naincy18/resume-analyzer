@@ -100,6 +100,14 @@ evaluation_cases = [
         Skilled in Python, SQL and FastAPI.
         """,
         "job": ""
+    },
+    {
+        "name": "Invalid Resume Input",
+        "expected": "Analyzer should reject a non-string resume input.",
+        "resume": 123,
+        "job": """
+        Python developer required with Python, SQL and FastAPI.
+        """
     }
 ]
 
@@ -133,8 +141,12 @@ def run_evaluation():
         log("Test Case: " + case["name"])
         log("Expected Behavior: " + case["expected"])
 
-        # Test empty input validation
-        if case["name"] in ["Empty Resume", "Empty Job Description"]:
+        # Test input validation
+        if case["name"] in [
+            "Empty Resume",
+            "Empty Job Description",
+            "Invalid Resume Input"
+        ]:
 
             try:
                 analyze_resume(case["resume"], case["job"])
@@ -144,8 +156,10 @@ def run_evaluation():
 
                 if case["name"] == "Empty Resume":
                     expected_error = "Resume text cannot be empty."
-                else:
+                elif case["name"] == "Empty Job Description":
                     expected_error = "Job description cannot be empty."
+                else:
+                    expected_error = "Resume text must be a string."
 
                 passed = str(error) == expected_error
                 log("Validation Message: " + str(error))

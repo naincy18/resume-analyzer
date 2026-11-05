@@ -62,10 +62,18 @@ def calculate_final_score(
 
 def analyze_resume(resume_text, job_description):
 
-    if not isinstance(resume_text, str) or not resume_text.strip():
+    # Validate resume input
+    if not isinstance(resume_text, str):
+        raise ValueError("Resume text must be a string.")
+
+    if not resume_text.strip():
         raise ValueError("Resume text cannot be empty.")
 
-    if not isinstance(job_description, str) or not job_description.strip():
+    # Validate job description input
+    if not isinstance(job_description, str):
+        raise ValueError("Job description must be a string.")
+
+    if not job_description.strip():
         raise ValueError("Job description cannot be empty.")
 
     resume_skills = extract_skills(resume_text)

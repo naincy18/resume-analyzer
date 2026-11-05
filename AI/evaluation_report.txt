@@ -1,7 +1,7 @@
 
 ========== AI MODEL EVALUATION ==========
-Evaluation Date and Time: 2026-11-05 17:22:41
-Total Test Cases: 8
+Evaluation Date and Time: 2026-11-05 17:27:08
+Total Test Cases: 9
 
 ----------------------------------------
 Test Case: Strong Match
@@ -101,12 +101,18 @@ Expected Behavior: Analyzer should reject an empty job description.
 Validation Message: Job description cannot be empty.
 Evaluation Result: PASS
 
+----------------------------------------
+Test Case: Invalid Resume Input
+Expected Behavior: Analyzer should reject a non-string resume input.
+Validation Message: Resume text must be a string.
+Evaluation Result: PASS
+
 ========== EVALUATION SUMMARY ==========
-Total Test Cases: 8
-Passed: 8
+Total Test Cases: 9
+Passed: 9
 Failed: 0
 Pass Percentage: 100.0%
 Overall Result: PASS
-Evaluation Duration: 2.97 seconds
+Evaluation Duration: 2.74 seconds
 
 ========== EVALUATION COMPLETED ==========
