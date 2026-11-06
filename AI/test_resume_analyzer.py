@@ -99,6 +99,7 @@ def test_experience_not_mentioned():
 
 def test_experience_scoring():
     assert calculate_experience_score(3, 2) == 100
+    assert calculate_experience_score(2, 2) == 100  # Exact requirement
     assert calculate_experience_score(1, 2) == 50
     assert calculate_experience_score(0, 2) == 0
     assert calculate_experience_score(None, 2) is None
