@@ -1,7 +1,7 @@
 
 ========== AI MODEL EVALUATION ==========
-Evaluation Date and Time: 2026-11-06 10:07:12
-Total Test Cases: 11
+Evaluation Date and Time: 2026-11-06 10:10:18
+Total Test Cases: 12
 
 ----------------------------------------
 Test Case: Strong Match
@@ -119,12 +119,18 @@ Expected Behavior: Analyzer should reject a job description containing only spac
 Validation Message: Job description cannot be empty.
 Evaluation Result: PASS
 
+----------------------------------------
+Test Case: Invalid Job Description Input
+Expected Behavior: Analyzer should reject a non-string job description input.
+Validation Message: Job description must be a string.
+Evaluation Result: PASS
+
 ========== EVALUATION SUMMARY ==========
-Total Test Cases: 11
-Passed: 11
+Total Test Cases: 12
+Passed: 12
 Failed: 0
 Pass Percentage: 100.0%
 Overall Result: PASS
-Evaluation Duration: 10.28 seconds
+Evaluation Duration: 2.42 seconds
 
 ========== EVALUATION COMPLETED ==========

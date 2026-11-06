@@ -125,6 +125,15 @@ evaluation_cases = [
         Skilled in Python, SQL and FastAPI.
         """,
         "job": "     "
+    },
+    {
+        "name": "Invalid Job Description Input",
+        "expected": "Analyzer should reject a non-string job description input.",
+        "resume": """
+        Python developer with 3 years of experience.
+        Skilled in Python, SQL and FastAPI.
+        """,
+        "job": 123
     }
 ]
 
@@ -164,7 +173,8 @@ def run_evaluation():
             "Empty Job Description",
             "Invalid Resume Input",
             "Whitespace-Only Resume",
-            "Whitespace-Only Job Description"
+            "Whitespace-Only Job Description",
+            "Invalid Job Description Input"
         ]:
 
             try:
@@ -184,6 +194,9 @@ def run_evaluation():
                     "Whitespace-Only Job Description"
                 ]:
                     expected_error = "Job description cannot be empty."
+
+                elif case["name"] == "Invalid Job Description Input":
+                    expected_error = "Job description must be a string."
 
                 else:
                     expected_error = "Resume text must be a string."
