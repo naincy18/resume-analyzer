@@ -300,3 +300,11 @@ def test_both_experience_values_negative():
         match="Experience years cannot be negative."
     ):
         calculate_experience_score(-1, -2)
+
+
+# 9. Fractional experience scoring test
+
+def test_fractional_experience_scoring():
+    score = calculate_experience_score(0.5, 2)
+
+    assert score == 25.0
