@@ -143,6 +143,14 @@ evaluation_cases = [
         Skilled in Python, SQL and FastAPI.
         """,
         "job": None
+    },
+    {
+        "name": "Missing Resume",
+        "expected": "Analyzer should reject a None resume.",
+        "resume": None,
+        "job": """
+        Python developer required with Python, SQL and FastAPI.
+        """
     }
 ]
 
@@ -184,7 +192,8 @@ def run_evaluation():
             "Whitespace-Only Resume",
             "Whitespace-Only Job Description",
             "Invalid Job Description Input",
-            "Missing Job Description"
+            "Missing Job Description",
+            "Missing Resume"
         ]:
 
             try:
@@ -320,3 +329,4 @@ def run_evaluation():
 
 if __name__ == "__main__":
     run_evaluation()
+
