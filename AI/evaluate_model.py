@@ -116,6 +116,15 @@ evaluation_cases = [
         "job": """
         Python developer required with Python, SQL and FastAPI.
         """
+    },
+    {
+        "name": "Whitespace-Only Job Description",
+        "expected": "Analyzer should reject a job description containing only spaces.",
+        "resume": """
+        Python developer with 3 years of experience.
+        Skilled in Python, SQL and FastAPI.
+        """,
+        "job": "     "
     }
 ]
 
@@ -154,7 +163,8 @@ def run_evaluation():
             "Empty Resume",
             "Empty Job Description",
             "Invalid Resume Input",
-            "Whitespace-Only Resume"
+            "Whitespace-Only Resume",
+            "Whitespace-Only Job Description"
         ]:
 
             try:
@@ -169,7 +179,10 @@ def run_evaluation():
                 ]:
                     expected_error = "Resume text cannot be empty."
 
-                elif case["name"] == "Empty Job Description":
+                elif case["name"] in [
+                    "Empty Job Description",
+                    "Whitespace-Only Job Description"
+                ]:
                     expected_error = "Job description cannot be empty."
 
                 else:
