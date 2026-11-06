@@ -1,7 +1,7 @@
 
 ========== AI MODEL EVALUATION ==========
-Evaluation Date and Time: 2026-11-06 10:17:10
-Total Test Cases: 15
+Evaluation Date and Time: 2026-11-07 01:56:02
+Total Test Cases: 16
 
 ----------------------------------------
 Test Case: Strong Match
@@ -151,12 +151,26 @@ Suggestions:
 - No recognized job skills were found. Review the job description or expand the skill vocabulary.
 Evaluation Result: PASS
 
+----------------------------------------
+Test Case: Resume with No Detected Skills
+Expected Behavior: No resume skills should match when no recognized resume skills are detected.
+
+Final Match Score: 8.43
+Skill Match Score: 0.0
+Semantic Similarity: 25.28
+Experience Score: None
+Matched Skills: []
+Missing Skills: ['django', 'docker', 'fastapi', 'python', 'sql']
+Suggestions:
+- Consider developing these missing skills: django, docker, fastapi, python, sql
+Evaluation Result: PASS
+
 ========== EVALUATION SUMMARY ==========
-Total Test Cases: 15
-Passed: 15
+Total Test Cases: 16
+Passed: 16
 Failed: 0
 Pass Percentage: 100.0%
 Overall Result: PASS
-Evaluation Duration: 2.11 seconds
+Evaluation Duration: 2.68 seconds
 
 ========== EVALUATION COMPLETED ==========

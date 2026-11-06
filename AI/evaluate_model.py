@@ -164,6 +164,19 @@ evaluation_cases = [
         who can work well with others, communicate clearly,
         and support daily business operations.
         """
+    },
+    {
+        "name": "Resume with No Detected Skills",
+        "expected": "No resume skills should match when no recognized resume skills are detected.",
+        "resume": """
+        I have 3 years of experience in customer service.
+        I communicate with customers, solve their problems,
+        and work responsibly with my team.
+        """,
+        "job": """
+        Software developer required with Python, Django,
+        SQL, Docker and FastAPI.
+        """
     }
 ]
 
@@ -301,6 +314,13 @@ def run_evaluation():
                     and result["match_score"] is not None
                 )
 
+            elif case["name"] == "Resume with No Detected Skills":
+                passed = (
+                    result["skill_match_score"] == 0
+                    and len(result["matched_skills"]) == 0
+                    and len(result["missing_skills"]) > 0
+                )
+
             log("Suggestions:")
             for suggestion in result["suggestions"]:
                 log("- " + suggestion)
@@ -348,4 +368,3 @@ def run_evaluation():
 
 if __name__ == "__main__":
     run_evaluation()
-
