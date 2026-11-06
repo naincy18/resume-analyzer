@@ -1,7 +1,7 @@
 
 ========== AI MODEL EVALUATION ==========
-Evaluation Date and Time: 2026-11-06 10:15:16
-Total Test Cases: 14
+Evaluation Date and Time: 2026-11-06 10:17:10
+Total Test Cases: 15
 
 ----------------------------------------
 Test Case: Strong Match
@@ -137,12 +137,26 @@ Expected Behavior: Analyzer should reject a None resume.
 Validation Message: Resume text must be a string.
 Evaluation Result: PASS
 
+----------------------------------------
+Test Case: No Job Skills Detected
+Expected Behavior: Skill match score should be unavailable when no job skills are detected.
+
+Final Match Score: 45.08
+Skill Match Score: None
+Semantic Similarity: 45.08
+Experience Score: None
+Matched Skills: []
+Missing Skills: []
+Suggestions:
+- No recognized job skills were found. Review the job description or expand the skill vocabulary.
+Evaluation Result: PASS
+
 ========== EVALUATION SUMMARY ==========
-Total Test Cases: 14
-Passed: 14
+Total Test Cases: 15
+Passed: 15
 Failed: 0
 Pass Percentage: 100.0%
 Overall Result: PASS
-Evaluation Duration: 2.1 seconds
+Evaluation Duration: 2.11 seconds
 
 ========== EVALUATION COMPLETED ==========

@@ -151,6 +151,19 @@ evaluation_cases = [
         "job": """
         Python developer required with Python, SQL and FastAPI.
         """
+    },
+    {
+        "name": "No Job Skills Detected",
+        "expected": "Skill match score should be unavailable when no job skills are detected.",
+        "resume": """
+        I have 3 years of experience in customer service.
+        Skilled in communication, teamwork and customer support.
+        """,
+        "job": """
+        We are looking for a motivated and responsible person
+        who can work well with others, communicate clearly,
+        and support daily business operations.
+        """
     }
 ]
 
@@ -280,6 +293,12 @@ def run_evaluation():
                     result["skill_match_score"] == 0
                     and len(result["matched_skills"]) == 0
                     and len(result["missing_skills"]) > 0
+                )
+
+            elif case["name"] == "No Job Skills Detected":
+                passed = (
+                    result["skill_match_score"] is None
+                    and result["match_score"] is not None
                 )
 
             log("Suggestions:")
