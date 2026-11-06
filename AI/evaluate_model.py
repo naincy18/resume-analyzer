@@ -177,6 +177,18 @@ evaluation_cases = [
         Software developer required with Python, Django,
         SQL, Docker and FastAPI.
         """
+    },
+    {
+        "name": "Missing Resume Experience with Required Experience",
+        "expected": "Experience score should be unavailable when the job requires experience but the resume does not mention it.",
+        "resume": """
+        Python developer skilled in Python, SQL,
+        FastAPI and Docker.
+        """,
+        "job": """
+        Python developer required with 4 years of experience.
+        Required skills: Python, SQL, FastAPI and Docker.
+        """
     }
 ]
 
@@ -321,6 +333,13 @@ def run_evaluation():
                     and len(result["missing_skills"]) > 0
                 )
 
+            elif case["name"] == "Missing Resume Experience with Required Experience":
+                passed = (
+                    result["experience_score"] is None
+                    and result["match_score"] is not None
+                    and result["skill_match_score"] == 100
+                )
+
             log("Suggestions:")
             for suggestion in result["suggestions"]:
                 log("- " + suggestion)
@@ -368,3 +387,4 @@ def run_evaluation():
 
 if __name__ == "__main__":
     run_evaluation()
+

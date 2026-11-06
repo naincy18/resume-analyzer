@@ -1,7 +1,7 @@
 
 ========== AI MODEL EVALUATION ==========
-Evaluation Date and Time: 2026-11-07 01:56:02
-Total Test Cases: 16
+Evaluation Date and Time: 2026-11-07 01:58:18
+Total Test Cases: 17
 
 ----------------------------------------
 Test Case: Strong Match
@@ -165,12 +165,26 @@ Suggestions:
 - Consider developing these missing skills: django, docker, fastapi, python, sql
 Evaluation Result: PASS
 
+----------------------------------------
+Test Case: Missing Resume Experience with Required Experience
+Expected Behavior: Experience score should be unavailable when the job requires experience but the resume does not mention it.
+
+Final Match Score: 96.53
+Skill Match Score: 100.0
+Semantic Similarity: 89.58
+Experience Score: None
+Matched Skills: ['docker', 'fastapi', 'python', 'sql']
+Missing Skills: []
+Suggestions:
+- Add your years of relevant professional experience to your resume, if applicable.
+Evaluation Result: PASS
+
 ========== EVALUATION SUMMARY ==========
-Total Test Cases: 16
-Passed: 16
+Total Test Cases: 17
+Passed: 17
 Failed: 0
 Pass Percentage: 100.0%
 Overall Result: PASS
-Evaluation Duration: 2.68 seconds
+Evaluation Duration: 3.0 seconds
 
 ========== EVALUATION COMPLETED ==========
