@@ -247,7 +247,7 @@ def test_job_description_with_only_spaces():
 def test_none_resume_text():
     with pytest.raises(
         ValueError,
-        match="Resume text cannot be empty."
+        match="Resume text must be a string."
     ):
         analyze_resume(None, "Python developer required")
 
@@ -255,7 +255,7 @@ def test_none_resume_text():
 def test_none_job_description():
     with pytest.raises(
         ValueError,
-        match="Job description cannot be empty."
+        match="Job description must be a string."
     ):
         analyze_resume("Python developer with experience", None)
 
@@ -290,3 +290,13 @@ def test_final_score_never_exceeds_100():
     score = calculate_final_score(120, 110, 105)
 
     assert score == 100.0
+
+
+# 8. Negative experience validation test
+
+def test_both_experience_values_negative():
+    with pytest.raises(
+        ValueError,
+        match="Experience years cannot be negative."
+    ):
+        calculate_experience_score(-1, -2)
